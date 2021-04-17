@@ -6,7 +6,7 @@ def buscador(texto):
     nombres=texto.split(" ")
     nombre=nombres[0].lower()
     apellido=nombres[1].lower()
-    df=pd.read_excel("C:\\Users\\Erwin Eduardo G.C\\Documents\\PYTHON\\Bot\\ProfesoresESFMV2.xlsx")
+    df=pd.read_excel("ProfesoresESFMV2.xlsx")
     df=df["PROFESOR"]
     df=df.dropna()
     lista=[]
@@ -14,16 +14,6 @@ def buscador(texto):
         pal=txt.lower()
         indexN=pal.find(nombre)
         indexA=pal.find(apellido)
-        """
-        if indexA==-1 and indexN==-1:
-            pass
-        elif indexA==-1 and indexN>=0:
-            pass
-        elif indexA>=0 and indexN==-1:
-            pass
-        else:
-            return pal.upper()
-        """
         if indexA>=0 and indexN>=0:
             return pal.upper()
         else:
@@ -35,7 +25,7 @@ def cap(row):
     return row
 
 def consulta():
-    df=pd.read_excel("C:\\Users\\Erwin Eduardo G.C\\Documents\\PYTHON\\Bot\\ProfesoresESFMV2.xlsx",index_col=None)
+    df=pd.read_excel("ProfesoresESFMV2.xlsx",index_col=None)
     df=df[["PROFESOR"]]
     df=df.apply(lambda row:cap(row))
     return df
