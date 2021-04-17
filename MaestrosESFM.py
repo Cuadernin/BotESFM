@@ -1,6 +1,7 @@
 import pandas as pd
 
 def buscador(texto):
+      ">>>>>>>>>>>>>>>>>> BUSCADOR QUE ENCUENTRA EL NOMBRE COMPLETO CON UN NOMBRE Y APELLIDO <<<<<<<<<<<<<<<<<<<"
     nombres=texto.split(" ")
     nombre=nombres[0].lower()
     apellido=nombres[1].lower()
