@@ -16,10 +16,10 @@ from SugeridosFirebase import sug,lecturaSug,sugerenciasbot
 from MaestrosESFM import buscador,consulta
 from telebot import types
 
-TOKEN="1617932110:AAH2adUxuwllYrCuI_k6O8sU_KfxhT1R9eI"
+TOKEN=TOKEN
 bot=telebot.TeleBot(TOKEN)
 
-firebase=firebase.FirebaseApplication("https://base-8fb74-default-rtdb.firebaseio.com/",None)
+firebase=firebase.FirebaseApplication("link",None)
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -34,92 +34,11 @@ def start(message):
 @bot.message_handler(commands=['help'])
 def help(message): 
     """Crea una funcion cuando escribe HELP"""       #agregar colecciones para cada maestro usando el archivo de excel                
-    messages="""A continuacion, la lista de funciones divididas por categorias: 
-    
-==============================     
-========= PROFESORES =========
-============================== 
-    -- Escribe una reseña de un profesor:
-        💬Descripción: Escribe una breve reseña de un profesor (Menos de 250 caracteres).
-        🔑Comando: /profesores
-       
-        Ejemplo: El profesor X es un excelente profesor. Su clase es muy interesante y plantea situaciones del mundo real donde tenemos que hacer uso de las herramientas que nos proporciona en clase.
-    
-    -- Lee las reseñas que han escrito otros compañeros:
-        💬Descripción: Lee las reseñas que han escrito otros alumnos.
-        🔑Comando: /lectura 
-        
-    -- Enlista los profesores disponibles en la base de datos:
-        💬Descripción: Lista de profesores.
-        🔑Comando: /listas
-        
-===============================    
-========= PROGRAMACIÓN ========
-=============================== 
-    -- Plataformas para aprender programación:
-        💬Descripción: Lista de plataformas donde se puede aprender a programar.
-        🔑Comando: /plataformas
-    -- Base de datos:
-        💬Descripción: Cursos gratuitos de base de datos relacionales.
-        🔑Comando: /cursos
-        
-==============================        
-========= SUGERENCIAS ========
-==============================  
-    -- Sugerencia para mejorar el bot
-        💬Descripción: Escribe una sugerencia para el autor de este bot y así seguir mejorándolo.
-        🔑Comando: /sugbot
-        
-==============================        
-========== ESCUELA ===========
-==============================
-    -- Escribir una sugerencia para mejorar la escuela:
-        💬Descripción: Escribe una sugerencia o consejo para mejorar algún aspecto de la escuela. 
-        🔑Comando: /sugerencia
-        
-    -- Leer las sugerencias escritas por otros alumnos:
-        💬Descripción: Puedes ver las sugerencias escritas por otros alumnos o escribir una. 
-        🔑Comando: /leersug    
-        
-    -- Solicitar constancias:
-        💬Descripción: PowerPoint con las instrucciones oficiales para solicitar una constancia. 
-        🔑Comando: /constancias  
-        
-    -- Calendario:
-        💬Descripción: Calendario oficial del IPN. 
-        🔑Comando: /calendario 
-        
-    -- Certificados y carta de pasante:
-        💬Descripción: Procedimiento para obtener el certificado de estudios y la carta de pasante. 
-        🔑Comando: /certificado 
-        
-==============================        
-=========== OTROS ============
-==============================
-    -- Covid:
-        💬Descripción: Confirmados y muertes por estado en México.
-        🔑Comando: /covid
-        
-    -- Datos intersantes acerca de un número:
-        💬Descripción: Datos "matemáticos" interesantes acerca de un número ENTERO que escribas (válido desde el 3 al 700).
-        🔑Comando: /numero
-        
-    -- Datos interesantes acerca de un número aleatorio:
-        💬Descripción: Datos interesantes sobre un número (válido del 1 al 3500)
-        🔑Comando: /random
-        
-    -- Contacto:
-        💬Descripción: Contacto con autor.
-        🔑Comando: /contacto
-        
-    -- ChatBot:
-        💬Descripción: Chatea con un chatbot llamado Nuvo. 
-        🔑Comando: /nuvo
-        📑Nota: Este es el primer chatbot que diseño llamado Nuvo👷.  Por lo que, puede que su respuesta no tenga mucho sentido, estoy trabajando en ello. Para dejar de hablar con él escribe: salir.
-    """
+    messages=messages
     chat_id=message.chat.id
     bot.send_message(chat_id=chat_id,text=messages)
-    
+ 
+
 # ======================================= PROFESORES  ======================================= # 
 #### ESCRITURA DE RESEÑA ####
 @bot.message_handler(commands=['profesores'])   
@@ -299,32 +218,8 @@ def cursos(message):
 # ======================================= OTROS  ======================================= #
 @bot.message_handler(commands=['covid']) 
 def covid(message):
-    link="https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats"
-    querystring={"country":"Mexico"}
-    headers={
-        'x-rapidapi-key':"5c7d84061amshb6ada123e8de3fcp104033jsne3d05d482678",
-        'x-rapidapi-host':"covid-19-coronavirus-statistics.p.rapidapi.com"
-        }
-    response=requests.request("GET",link,headers=headers, params=querystring)
-    data=response.json()
-    lista,ciudades,confirmados,muertes=[],[],[],[]
-    my_message="""Hola, espero se encuentre bien. A continuación, la informacion diaria de COVID-19 en el pais."""# Customize your message
-    for user in data['data']['covid19Stats']:  
-        lista.append([user['province'],'2021-04-12',user['confirmed'],user['deaths'],user['recovered']])
-    lista.pop(29)
-    lista[14][0]='Estado de Mexico'
-    chat_id=message.chat.id
-    bot.send_message(chat_id=chat_id,text=my_message)
-    for i in range(len(lista)): 
-        ciudades.append(lista[i][0])
-        confirmados.append(lista[i][2])
-        muertes.append(lista[i][3]) 
-        mensaje="""
-            Ciudad: %s 
-        Confirmados: %s
-        Muertes: %s  
-        \r"""%(ciudades[i],confirmados[i],muertes[i])
-        bot.send_message(chat_id=chat_id,text=mensaje)
+    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA MANDAR LA INFORMACION DE COVID <<<<<<<<<<<<<<<<<<<"
+    bot.send_message(chat_id=chat_id,text=mensaje)
         
 @bot.message_handler(commands=['contacto']) 
 def contactos(message):
@@ -338,7 +233,6 @@ def contactos(message):
 def numeross(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid,text='Escribe el número: ')
-    #msg=bot.reply_to(message, 'Escribe el número: ')
     bot.register_next_step_handler(msg, number)
 
 def number(message):
@@ -410,7 +304,7 @@ def charla(message):
         msg=bot.send_message(chat_id=chatid,text=str(bot_input))
         bot.register_next_step_handler(msg,charla)    
 
-
+"" BLOQUE PRINCIPAL ""
 while 1:
     try:
         bot.polling(none_stop = True)
