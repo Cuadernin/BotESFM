@@ -11,3 +11,5 @@ Para comenzar a usarlo da click en el botón start y después escribe /help. Cad
 ### Notas 📖
 En este repertorio se encuentra el código base del bot con la finalidad de que cualquiera que quiera crear el suyo pueda usarlo. 
 
+__El programa main se llama BotESFMV2.py__
+
