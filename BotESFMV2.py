@@ -1,5 +1,4 @@
 import time
-import requests
 import telebot
 import pandas as pd
 
@@ -14,7 +13,7 @@ from tabulate import tabulate
 from ConexionFirebase import conexion,lecturaR,lecturaT
 from SugeridosFirebase import sug,lecturaSug,sugerenciasbot
 from MaestrosESFM import buscador,consulta
-from telebot import types
+
 
 TOKEN=TOKEN
 bot=telebot.TeleBot(TOKEN)
@@ -27,61 +26,43 @@ def start(message):
     
     ¡ESPERO TE SEA DE UTILIDAD!♥
     """
-    chat_id=message.chat.id
-    bot.send_message(chat_id=chat_id,text=messages)
+    chat_id=message.chat.id # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
+    bot.send_message(chat_id=chat_id,text=messages) # Esta instruccion  se repite muchas veces ya que con ella mandas un mensaje al usuario del id
 
 # ======================================= AYUDA ======================================= #
 @bot.message_handler(commands=['help'])
 def help(message): 
-    """Crea una funcion cuando escribe HELP"""       #agregar colecciones para cada maestro usando el archivo de excel                
-    messages=messages
-    chat_id=message.chat.id
-    bot.send_message(chat_id=chat_id,text=messages)
+    """Crea una funcion cuando escribe HELP"""                      
+    messages="Mensaje por mostrar cuando se escribe el comando /help"
+    chat_id=message.chat.id  # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
+    bot.send_message(chat_id=chat_id,text=messages) # Esta instruccion  se repite muchas veces ya que con ella mandas un mensaje al usuario del id
  
 
 # ======================================= PROFESORES  ======================================= # 
 #### ESCRITURA DE RESEÑA ####
 @bot.message_handler(commands=['profesores'])   
 def profesores(message):
-    chatid=message.chat.id
-    msg=bot.send_message(chat_id=chatid,text="Escribe el nombre del maestro empezando por el nombre:")
-    bot.register_next_step_handler(msg,profesor)
+    chatid=message.chat.id # Esta funcion se repite muchas veces ya que con ella obtienes el id del usuario
+    msg=bot.send_message(chat_id=chatid,text="Escribe el nombre del maestro empezando por el nombre:") # Esta instruccion  se repite muchas veces ya que con ella mandas un mensaje al usuario del id
+    bot.register_next_step_handler(msg,profesor) # Da pie a accionar la funcion <profesor> a partir del mensaje "msg"
 
-lista=[]
+
 def profesor(message):
-    chatid=message.chat.id
-    texto=message.text
+    lista=[]
+    chatid=message.chat.id # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
+    texto=message.text # Esta instruccion  se repite muchas veces ya que con ella obtienes el mensaje del usuario
     maestro=buscador(str(texto))
-    lista.append(maestro)
     if maestro==None:
-        msg=bot.send_message(chat_id=chatid,text="Lo siento, el profesor no existe en la base de datos. \
-            Vuelva a escribir el nombre correctamente.")
+        msg=bot.send_message(chat_id=chatid,text="Lo siento, el profesor no existe en la base de datos. \ 
+            Vuelva a escribir el nombre correctamente.") # Esta instruccion  se repite muchas veces ya que con ella mandas un mensaje al usuario del id
         bot.register_next_step_handler(msg, profesor)   
     else:
+        lista.append(maestro)
         msg=bot.reply_to(message, 'Escribe tu reseña:')
-        bot.register_next_step_handler(msg, escritura)   
+        bot.register_next_step_handler(msg, escritura)   # Da pie a accionar la funcion <escritura> a partir del mensaje "msg"
 
 def escritura(message):
-    try:
-        chatid=message.chat.id
-        texto=message.text
-        if len(texto)<250:
-            username=message.chat.first_name+'_'+message.chat.last_name
-            respuesta=conexion(chatid, username,texto,lista[0])
-            lista.pop(0)
-            if type(respuesta)==dict:
-                msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}.')
-            else:
-                msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido.')
-        elif len(texto)<16:
-            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
-            bot.register_next_step_handler(msg, escritura)
-        else:  
-            #msg=bot.reply_to(message, 'El texto debe contener menos de 250 caracteres. Prueba otra vez')
-            msg=bot.send_message(chat_id=chatid,text='El texto debe contener menos de 250 caracteres. Prueba otra vez.')
-            bot.register_next_step_handler(msg,escritura)
-    except Exception as e:
-        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
+    pass
         
         
 #### LECTURA DE RESEÑA #### 
@@ -90,7 +71,7 @@ def listas(message):
     chatid=message.chat.id
     texto=consulta()
     text=texto[:80]
-    txt=tabulate(text,headers=["Id","PROFESOR"])
+    txt=tabulate(text,headers=["Id","PROFESOR"])  # Esta instruccion permite imprimir de forma bonita un dataframe
     bot.send_message(chat_id=chatid,text=txt,parse_mode="Markdown")
     texto2=texto[80:]
     txt2=tabulate(texto2,headers=["Id","PROFESOR"])
@@ -102,19 +83,10 @@ def lectura(message):
     chatid=message.chat.id
     texto=message.text
     msg=bot.send_message(chat_id=chatid,text="Escribe el nombre del maestro empezando por el nombre:")
-    bot.register_next_step_handler(msg,validado)
+    bot.register_next_step_handler(msg,validado) # Da pie a accionar la funcion <validado> a partir del mensaje "msg"
 
 def validado(message):
-    chatid=message.chat.id
-    texto=message.text
-    maestro=buscador(str(texto))
-    if maestro==None:
-        msg=bot.send_message(chat_id=chatid,text="Lo siento, el profesor no existe en la base de datos. \
-            Vuelva a escribir el nombre correctamente.")
-        bot.register_next_step_handler(msg, validado)   
-    else:
-        txt=txtprofesores(maestro)
-        bot.send_document(chat_id=chatid,data=txt,caption='.txt con las consultas.')  
+    pass
 
 # ======================================= PRINCIPALES  ======================================= #
 
@@ -123,56 +95,21 @@ def validado(message):
 def sugbot(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid,text="Escribe tu sugerencia:")
-    bot.register_next_step_handler(msg,mibot)
+    bot.register_next_step_handler(msg,mibot) # Da pie a accionar la funcion <mibot> a partir del mensaje "msg"
 
 
 def mibot(message):
-    try:
-        chatid=message.chat.id
-        texto=message.text
-        if len(texto)<250:
-            username=message.chat.first_name+'_'+message.chat.last_name
-            respuesta=sugerenciasbot(chatid, username,texto)
-            if type(respuesta)==dict:
-                msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}, por tu sugerencia. Esto me ayuda a mejorar el bot.')
-            else:
-                msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido.')
-        elif len(texto)<16:
-            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
-            bot.register_next_step_handler(msg, mibot)
-        else:  
-            msg=bot.send_message(chat_id=chatid,text='El texto debe contener menos de 250 caracteres. Prueba otra vez.')
-            bot.register_next_step_handler(msg, mibot)
-    except Exception as e:
-        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
+    pass
         
 # ======================================= ESCUELA  ======================================= #  
 @bot.message_handler(commands=['sugerencia'])   
 def sugerencia(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid,text="Escribe tu sugerencia:")
-    bot.register_next_step_handler(msg,escuela)
+    bot.register_next_step_handler(msg,escuela) # Da pie a accionar la funcion <escuela> a partir del mensaje "msg"
 
 def escuela(message):
-    try:
-        chatid=message.chat.id
-        texto=message.text
-        if len(texto)<250:
-            username=message.chat.first_name+'_'+message.chat.last_name
-            respuesta=sug(chatid, username,texto)
-            if type(respuesta)==dict:
-                msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}.')
-            else:
-                msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido')
-        elif len(texto)<16:
-            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
-            bot.register_next_step_handler(msg, escuela)
-        else:  
-            #msg=bot.reply_to(message, 'El texto debe contener menos de 250 caracteres. Prueba otra vez')
-            msg=bot.send_message(chat_id=chatid,text='El texto debe contener menos de 250 caracteres. Prueba otra vez.')
-            bot.register_next_step_handler(msg, escuela)
-    except Exception as e:
-        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
+    pass
 
 @bot.message_handler(commands=['leersug'])
 def leersug(message):
@@ -183,17 +120,13 @@ def leersug(message):
         
 @bot.message_handler(commands=['calendario'])
 def calendario(message):
-    chatid=message.chat.id
-    url='cal-Escolarizada-20-21.pdf'
-    with open(url,'rb') as file:
-        bot.send_document(chat_id=chatid,data=file,caption='Calendario Oficial del IPN 2020-2021')
+    ">>>>>>>>>>>>>>>>>> SIMILAR A LA FUNCION ANTERIOR <<<<<<<<<<<<<<<<<<<"
+    pass
 
 @bot.message_handler(commands=['constancias'])
 def constancias(message):
-    chatid=message.chat.id
-    url="PROCED. DE SOLICITUD DE BOLETAS Y CONSTANCIAS año 2021.pdf"
-    with open(url,'rb') as file:
-        bot.send_document(chat_id=chatid,data=file,caption='Proced. de solicitud de boletas y constancias')
+    ">>>>>>>>>>>>>>>>>> SIMILAR A LA FUNCION <leersug> <<<<<<<<<<<<<<<<<<<"
+    pass
 
 @bot.message_handler(commands=['certificado'])
 def certificado(message):
@@ -213,19 +146,19 @@ def plataformas(message):
 def cursos(message):
     dato=base()
     chatid=message.chat.id
-    bot.send_message(chat_id=chatid,text=dato) 
+    bot.send_message(chat_id=chatid,text=dato)   
     
 # ======================================= OTROS  ======================================= #
 @bot.message_handler(commands=['covid']) 
 def covid(message):
     ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA MANDAR LA INFORMACION DE COVID <<<<<<<<<<<<<<<<<<<"
-    bot.send_message(chat_id=chat_id,text=mensaje)
+    pass
         
 @bot.message_handler(commands=['contacto']) 
 def contactos(message):
     url="github.com/Cuadernin"
     chatid=message.chat.id
-    username=message.chat.first_name
+    username=message.chat.first_name # Esta instruccion  te permite obtener el nombre del usuario
     txt=f"Hola, {username}, puedes contactarme entrando a mi repositorio: {url}"
     bot.send_message(chat_id=chatid,text=txt) 
 
@@ -233,80 +166,42 @@ def contactos(message):
 def numeross(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid,text='Escribe el número: ')
-    bot.register_next_step_handler(msg, number)
+    bot.register_next_step_handler(msg, number) # Da pie a accionar la funcion <number> a partir del mensaje "msg"
 
 def number(message):
-    chatid=message.chat.id
-    texto=message.text
-    try:
-        texto=int(texto)
-        if texto>2 and texto<700:
-            dato=numeros(texto)
-            bot.send_message(chat_id=chatid,text=dato)
-        else:
-            #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO ENTERO MAYOR QUE 2:')
-            msg=bot.send_message(chat_id=chatid, text='ESCRIBE UN NÚMERO ENTERO MAYOR QUE 2:')
-            bot.register_next_step_handler(msg, number)
-    except:
-        #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO:')
-        msg=bot.send_message(chat_id=chatid, text='Debes escribir un numero. Prueba otra vez:')
-        bot.register_next_step_handler(msg, number)
+    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA SOLICITAR DATOS DE UN NUMERO O AGRÉGUELOS CON UN YAML <<<<<<<<<<<<<<<<<<<"
+    pass
 
 @bot.message_handler(commands=['random'])
 def random(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid, text='Escribe el número: ')
-    bot.register_next_step_handler(msg, aleatorio)
+    bot.register_next_step_handler(msg, aleatorio) # Da pie a accionar la funcion <aleatorio> a partir del mensaje "msg"
 
 def aleatorio(message):
-    chatid=message.chat.id
-    texto=message.text
-    try:
-        texto=int(texto)
-        if texto>2 and texto<3501:
-            dato=rand(texto)
-            bot.send_message(chat_id=chatid,text=dato)
-        else:
-            #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO ENTERO MAYOR QUE 1:')
-            msg=bot.send_message(chat_id=chatid, text='ESCRIBE UN NÚMERO ENTERO MAYOR QUE 1:')
-            bot.register_next_step_handler(msg, aleatorio)
-    except:
-        #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO:')
-        msg=bot.send_message(chat_id=chatid, text='Debes escribir un numero. Prueba otra vez:')
-        bot.register_next_step_handler(msg, aleatorio)
+    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA SOLICITAR DATOS DE UN NUMERO O AGRÉGUELOS CON UN YAML <<<<<<<<<<<<<<<<<<<"
+    pass
 
 @bot.message_handler(commands=['nuvo'])
 def nuvo(message):
-    chatbott=ChatBot('Nuvo')
-    trainer=ChatterBotCorpusTrainer(chatbott)
-    trainer.train("chatterbot.corpus.spanish.greetings",
-    "chatterbot.corpus.spanish.conversations",
-    "chatterbot.corpus.spanish.IA",
-    "chatterbot.corpus.spanish.dinero",
-    "chatterbot.corpus.spanish.emociones",
-    "chatterbot.corpus.spanish.perfilbot")
+    chatbott=ChatBot('Nuvo')  # Nombre del bot
+    
+     ">>>>>>>>>>>>>>>>>> ENTRENAMOS EL BOT <<<<<<<<<<<<<<<<<<<"
+        
     texto=message.text
     chatid=message.chat.id
-    bot_input=chatbott.get_response(texto)
-    msg=bot.send_message(chat_id=chatid,text=str(bot_input))
-    bot.register_next_step_handler(msg,charla)
+    bot_input=chatbott.get_response(texto) # Respuesta del bot
+    msg=bot.send_message(chat_id=chatid,text=str(bot_input)) 
+    bot.register_next_step_handler(msg,charla) # Da pie a accionar la funcion <charla> a partir del mensaje "msg"
     return chatbott
 
 def charla(message):
-    chatbott=ChatBot('Nuvo')
-    trainer=ChatterBotCorpusTrainer(chatbott)
-    chatid=message.chat.id
-    texto=message.text
-    if texto.lower()=="salir":
-        bot.send_message(chat_id=chatid,text="Hasta luego. Fue un gusto hablar contigo.")
-    else:
-        bot_input=chatbott.get_response(texto)
-        msg=bot.send_message(chat_id=chatid,text=str(bot_input))
-        bot.register_next_step_handler(msg,charla)    
+    ">>>>>>>>>>>>>>>>>> CREAMOS UN CICLO DONDE EL BOT SIGUE LA CHARLA <<<<<<<<<<<<<<<<<<<"
+    pass  
 
 "" BLOQUE PRINCIPAL ""
 while 1:
     try:
-        bot.polling(none_stop = True)
+        bot.polling(none_stop = True) # Con esta instruccion garantizamos que el bot siga funcionando a pesar de errores
     except:
-        time.sleep(15)
+        time.sleep(15) # Si ocurre algun error grave esperamos 15 segundos para el reinicio
