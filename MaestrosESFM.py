@@ -1,6 +1,4 @@
-from firebase import firebase
 import pandas as pd
-from tabulate import tabulate
 
 def buscador(texto):
     nombres=texto.split(" ")
@@ -20,8 +18,8 @@ def buscador(texto):
             pass
 
 def cap(row):
-    for i, item in enumerate(row):
-        row[i] = item.title()
+    for i,item in enumerate(row):
+        row[i]=item.title()
     return row
 
 def consulta():
