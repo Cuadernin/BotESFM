@@ -16,4 +16,4 @@ def numeros(n):
 
 def rand(n):
      ">>>>>>>>>>>>>>>>>> INGRESE UNA API COMO LA ANTERIOR <<<<<<<<<<<<<<<<<<<"
-    return respuesta.capitalize()+"."
+    pass
