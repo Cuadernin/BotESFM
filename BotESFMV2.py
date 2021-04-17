@@ -22,7 +22,7 @@ firebase=firebase.FirebaseApplication("link",None)
 
 @bot.message_handler(commands=['start'])    # Funciones que serán llamadas si el usuario escribe el comando start ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start  <<<<<<<<<<<<<<<<<<<"
-def start(message):
+def start(message):  # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
     messages="""Hola😊, espero te encuentres bien. Esta es la versión 1.0 de este bot. Cualquier fallo que encuentres te agradecería muchísimo que nos contactaras. Para conocer lo que puedes hacer por favor escribe /help y lee con atención las intrucciones de uso de cada función🌞. 
     
     ¡ESPERO TE SEA DE UTILIDAD!♥
@@ -33,7 +33,7 @@ def start(message):
 # ======================================= AYUDA ======================================= #
 @bot.message_handler(commands=['help'])  # Funciones que serán llamadas si el usuario escribe el comando help ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /help  <<<<<<<<<<<<<<<<<<<"
-def help(message): 
+def help(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
     """Crea una funcion cuando escribe HELP"""                      
     messages="Mensaje por mostrar cuando se escribe el comando /help"
     chat_id=message.chat.id  # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
@@ -43,7 +43,7 @@ def help(message):
 # ======================================= PROFESORES  ======================================= # 
 #### ESCRITURA DE RESEÑA ####
 @bot.message_handler(commands=['profesores'])    # Funciones que serán llamadas si el usuario escribe el comando profesores ---> No es necesario que la funcion se llame igual que el comando
-def profesores(message):
+def profesores(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
     chatid=message.chat.id # Esta funcion se repite muchas veces ya que con ella obtienes el id del usuario
     msg=bot.send_message(chat_id=chatid,text="Escribe el nombre del maestro empezando por el nombre:") # Esta instruccion se repite muchas veces ya que con ella mandas un mensaje al usuario del id
     bot.register_next_step_handler(msg,profesor) # Da pie a accionar la funcion <profesor> a partir del mensaje "msg"
@@ -116,7 +116,6 @@ def escuela(message):
 @bot.message_handler(commands=['leersug'])
 def leersug(message):
     chatid=message.chat.id
-    texto=message.text
     txt=txtescuela()
     bot.send_document(chat_id=chatid,data=txt,caption='txt con las consultas.')  
         
