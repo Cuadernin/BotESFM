@@ -6,7 +6,7 @@ de [ESFM](https://www.esfm.ipn.mx/) en distintas tareas.
 Escribe @ESFMBot en el buscador de telegram y da click en él. Cuando salgas de la conversación aparecerá en tu feed. 
 
 ## Uso 🎮
-Para comenzar a usarlo da click en el botón start y después escribe /help. Cada uno de los comandos están bien explicados. 
+Para comenzar a usarlo da click en el botón start y después escribe /help. 
 
 ### Notas 📖
 En este repertorio se encuentra el código base del bot con la finalidad de que cualquiera que quiera crear el suyo pueda usarlo. No obstante, se debe tener conocimiento previo de
