@@ -48,9 +48,8 @@ def profesores(message): # Como argumento principal de la funcion tomamos la pro
     msg=bot.send_message(chat_id=chatid,text="Escribe el nombre del maestro empezando por el nombre:") # Esta instruccion se repite muchas veces ya que con ella mandas un mensaje al usuario del id
     bot.register_next_step_handler(msg,profesor) # Da pie a accionar la funcion <profesor> a partir del mensaje "msg"
 
-
+lista=[]
 def profesor(message):
-    lista=[]
     chatid=message.chat.id # Esta instruccion se repite muchas veces ya que con ella obtienes el id del usuario
     texto=message.text # Esta instruccion se repite muchas veces ya que con ella obtienes el mensaje del usuario
     maestro=buscador(str(texto))
