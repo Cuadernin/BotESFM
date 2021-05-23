@@ -9,7 +9,7 @@ Escribe @ESFMBot en el buscador de telegram y da click en él. Cuando salgas de 
 Para comenzar a usarlo da click en el botón start y después escribe /help. 
 
 ### Notas 📖
-En este repertorio se encuentra el código base del bot con la finalidad de que cualquiera que quiera crear el suyo pueda usarlo. No obstante, se debe tener conocimiento previo de
+En este repertorio se encuentra el código base del bot de la versión 1.0 con la finalidad de que cualquiera que quiera crear el suyo pueda usarlo. No obstante, se debe tener conocimiento previo de
 Python y debe disponerse de una maquina virtual para alojar y mantener la instancia corriendo.
 Puedes crear un bot en Python de dos maneras:
 * Con la libreria [PyTelegramBotAPI](https://pypi.org/project/pyTelegramBotAPI/0.3.0/)
