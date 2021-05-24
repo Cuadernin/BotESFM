@@ -5,7 +5,7 @@ import pandas as pd
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.trainers import ListTrainer
-from programacion import plataforma
+from programacion import plataforma,dataset
 from datos import base,txtprofesores,txtescuela
 from Educacion import numeros,rand
 from firebase import firebase
@@ -22,14 +22,19 @@ firebase=firebase.FirebaseApplication("link",None)
 
 @bot.message_handler(commands=['start'])    # Funciones que serán llamadas si el usuario escribe el comando start ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start  <<<<<<<<<<<<<<<<<<<"
-def start(message):  # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
-    messages="""Hola😊, espero te encuentres bien. Esta es la versión 1.0 de este bot. Cualquier fallo que encuentres te agradecería muchísimo que nos contactaras. Para conocer lo que puedes hacer por favor escribe /help y lee con atención las intrucciones de uso de cada función🌞. 
-    
+def start(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
+    messages="""Esta es la versión 1.3 . Se han agregado tres nuevas funciones.
+    1. Escudos de la escuela en formato png.
+    2. Reglamento general de estudios.
+    3. Solicitud de datos históricos de una acción (yahoo finance).
+
+    Cualquier fallo que encuentres te agradecería muchísimo que me contactaras.
+
     ¡ESPERO TE SEA DE UTILIDAD!♥
     """
-    chat_id=message.chat.id # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
+    chat_id=message.chat.id  # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
     bot.send_message(chat_id=chat_id,text=messages) # Esta instruccion se repite muchas veces ya que con ella mandas un mensaje al usuario del id
-
+    
 # ======================================= AYUDA ======================================= #
 @bot.message_handler(commands=['help'])  # Funciones que serán llamadas si el usuario escribe el comando help ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /help  <<<<<<<<<<<<<<<<<<<"
@@ -134,6 +139,12 @@ def certificado(message):
     texto='''Ingresa al siguiente sitio web para seguir el procedimiento: https://www.dae.ipn.mx/certifyCartaDig.aspx.
     No olvides que tardan de 1 a 2 meses en entregarte los documentos.'''
     bot.send_message(chat_id=chatid,text=texto)
+
+@bot.message_handler(commands=["datasets"])
+def datasets(message):
+    chatid=message.chat.id
+    texto=dataset()
+    bot.send_message(chat_id=chatid,text=texto)
     
 # ======================================= PROGRAMACION  ======================================= #  
 @bot.message_handler(commands=['plataformas'])    
@@ -198,6 +209,59 @@ def nuvo(message):
 def charla(message):
     ">>>>>>>>>>>>>>>>>> CREAMOS UN CICLO DONDE EL BOT SIGUE LA CHARLA <<<<<<<<<<<<<<<<<<<"
     pass  
+
+lista2=[]
+@bot.message_handler(commands=["acciones"])
+def stocks(message):
+    mensaje="""No olvides tomar en cuenta cuándo la empresa comenzó a cotizar en la bolsa o de lo contrario no te generará el archivo. Ejemplo de uso:
+        Abreviatura: FB
+        Fecha de inicio: 27-03-2020 (sin espacios)
+        Fecha de fin: 28-03-2021 (sin espacios)
+        """
+    chatid=message.chat.id
+    bot.send_message(chat_id=chatid,text=mensaje)
+    msg=bot.send_message(chat_id=chatid,text="Escribe la abreviatura:")
+    bot.register_next_step_handler(msg,fecha1)
+
+def fecha1(message):
+    texto=message.text
+    if len(texto)>1:
+        lista2.append(texto)
+        chatid=message.chat.id
+        msg=bot.send_message(chat_id=chatid,text="Escribe la fecha de inicio:")
+        bot.register_next_step_handler(msg,fecha2)
+    else:
+        msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
+        bot.register_next_step_handler(msg,fecha1)
+
+def fecha2(message):
+    texto=message.text
+    guion=texto.find("-")
+    if len(texto)>=8 and len(texto)<=10 and guion!=-1:
+        lista2.append(texto)
+        chatid=message.chat.id
+        msg=bot.send_message(chat_id=chatid,text="Escribe la fecha de fin:")
+        bot.register_next_step_handler(msg,stock)
+    else:
+        msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
+        bot.register_next_step_handler(msg,fecha2)
+
+def stock(message):
+    texto=message.text
+    chatid=message.chat.id
+    guion=texto.find("-")
+    if len(texto)>=8 and len(texto)<=10 and guion!=-1:
+        lista2.append(texto)
+        ac=historial(lista2[0],lista2[1],lista2[2])
+        if ac==1:
+            with open('valores_acciones.csv','rb') as file:
+                bot.send_document(chat_id=chatid,data=file,caption='csv con los datos.')
+                lista2.clear()
+        else:
+            bot.send_message(chat_id=chatid,text='Algo falla, intenta con otra abreviatura o cambia la fecha.')
+    else:
+        msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
+        bot.register_next_step_handler(msg,stock)
 
 "" BLOQUE PRINCIPAL ""
 while 1:
