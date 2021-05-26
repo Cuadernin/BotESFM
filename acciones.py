@@ -1,7 +1,9 @@
 import pandas_datareader.data as web
 import datetime
 import requests_cache
-
+"""
+Extrae datos historicos de una acción que cotice en EE. UU usando pandas_datareader que hace uso de Yahoo finance.
+"""
 def historial(accion,fecha_start,fecha_end):
     expire_after=datetime.timedelta(days=3)
     session=requests_cache.CachedSession(cache_name='cache',backend='sqlite',expire_after=expire_after)
