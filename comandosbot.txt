@@ -1,0 +1,23 @@
+profesores - Escribe una breve reseña de un profesor.
+lectura - Lee las reseñas que han escrito otros alumnos.
+listas - Lista de profesores en la base de datos.
+plataformas - Lista de plataformas donde se puede aprender a programar.
+cursos - Cursos gratuitos de base de datos relacionales.
+sugbot -  Escribe una sugerencia para el autor de este bot y así seguir mejorándolo.
+sugerencia - Escribe una sugerencia o consejo para mejorar algún aspecto de la escuela.
+leersug - Puedes ver las sugerencias escritas por otros alumnos.
+constancias - PowerPoint con las instrucciones oficiales para solicitar una constancia.
+calendario  - Calendario oficial del IPN.
+certificado - Procedimiento para obtener el certificado de estudios y la carta de pasante.
+covid - Confirmados y muertes por estado en México.
+numero - Datos "matemáticos" interesantes acerca de un número ENTERO que escribas.
+random - Datos interesantes sobre un número. 
+contacto - Contacto con autor.
+nuvo - Chatea con un chatbot llamado Nuvo.
+plantilla - Plataforma para crear portadas formales.
+datasets - Datasets públicos.
+correos - Correos de los profesores.
+denuncia - Procedimiento para emitir una denuncia o queja.
+escudo - Imagen del escudo del IPN y ESFM.
+reglamento - Reglamento general de estudios.
+acciones - Datos historicos de una acción usando Yahoo finances.
