@@ -19,3 +19,4 @@ Puedes crear un bot en Python de dos maneras:
 El programa main se llama BotESFMV2.py
 ```
 
+La lista de funciones del bot se encuentra en _comandosbot.txt_
