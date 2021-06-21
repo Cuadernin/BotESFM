@@ -12,7 +12,7 @@ certificado - Procedimiento para obtener el certificado de estudios y la carta d
 covid - Confirmados y muertes por estado en México.
 numero - Datos "matemáticos" interesantes acerca de un número ENTERO que escribas.
 random - Datos interesantes sobre un número. 
-contacto - Contacto con autor.
+contacto - Contacto con el autor.
 nuvo - Chatea con un chatbot llamado Nuvo.
 plantilla - Plataforma para crear portadas formales.
 datasets - Datasets públicos.
@@ -20,4 +20,4 @@ correos - Correos de los profesores.
 denuncia - Procedimiento para emitir una denuncia o queja.
 escudo - Imagen del escudo del IPN y ESFM.
 reglamento - Reglamento general de estudios.
-acciones - Datos historicos de una acción usando Yahoo finances.
+acciones - Datos históricos de una acción usando Yahoo finances.
