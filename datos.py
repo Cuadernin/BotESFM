@@ -19,5 +19,5 @@ def txtescuela():
     return file2
 
 def txtprofesores(maestro):
-     ">>>>>>>>>>>>>>>>>> SIMILAR A LA ANTERIOR FUNCION <<<<<<<<<<<<<<<<<<<"
+     ">>>>>>>>>>>>>>>>> SIMILAR A LA ANTERIOR FUNCION <<<<<<<<<<<<<<<<<<"
     return file1
