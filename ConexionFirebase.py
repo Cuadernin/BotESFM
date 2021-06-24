@@ -17,7 +17,7 @@ def conexion(chat_id,username,texto,maestro):
 def lecturaR(maestro):
      ">>>>>>>>>>>>>>>>>> MANERA OPTIMA PARA SOLICITAR DATOS DE UNA BASE DE DATOS DE FIREBASE <<<<<<<<<<<<<<<<<<<"
      if not firebase_admin._apps:
-          cred=credentials.Certificate('Collection')
+         cred=credentials.Certificate('Collection')
          firebase_admin.initialize_app(cred,{'databaseURL':"URL"})
          ref=db.reference(f"/Collection/{maestro}")
          ref=ref.get()
