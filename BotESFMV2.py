@@ -1,6 +1,6 @@
 import time
+import requests
 import telebot
-import pandas as pd
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
@@ -10,9 +10,10 @@ from datos import base,txtprofesores,txtescuela
 from Educacion import numeros,rand
 from firebase import firebase
 from tabulate import tabulate
-from ConexionFirebase import conexion,lecturaR,lecturaT
-from SugeridosFirebase import sug,lecturaSug,sugerenciasbot
+from ConexionFirebase import conexion
+from SugeridosFirebase import sug,sugerenciasbot
 from MaestrosESFM import buscador,consulta
+from acciones import historial
 
 
 TOKEN=TOKEN
@@ -68,7 +69,26 @@ def profesor(message):
         bot.register_next_step_handler(msg, escritura)   # Da pie a accionar la funcion <escritura> a partir del mensaje "msg"
 
 def escritura(message):
-    pass
+    try:
+        chatid=message.chat.id
+        texto=message.text
+        if len(texto)<250 and len(texto)>0:
+            if message.chat.last_name==None:
+                username=message.chat.first_name
+            else:
+                username=message.chat.first_name+'_'+message.chat.last_name
+            respuesta=conexion(chatid, username,texto,lista[0])
+            lista.pop(0)
+            if respuesta==1: msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}.')
+            else: msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido.')
+        elif len(texto)<16 and len(texto)>0:
+            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
+            bot.register_next_step_handler(msg, escritura)
+        else:
+            msg=bot.send_message(chat_id=chatid,text='El texto debe contener más de 16 y menos de 250 carácteres. Prueba otra vez:')
+            bot.register_next_step_handler(msg,escritura)
+    except Exception as e:
+        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
         
         
 #### LECTURA DE RESEÑA #### 
@@ -92,9 +112,29 @@ def lectura(message):
     bot.register_next_step_handler(msg,validado) # Da pie a accionar la funcion <validado> a partir del mensaje "msg"
 
 def validado(message):
-    pass
+    chatid=message.chat.id
+    texto=message.text
+    if len(texto)>1:
+        nombres=texto.split(" ")
+        if len(nombres)>1:
+            maestro=buscador(str(texto))
+            if maestro==None:
+                msg=bot.send_message(chat_id=chatid,text="Lo siento, el profesor no existe en la base de datos. Vuelva a escribir el nombre correctamente:")
+                bot.register_next_step_handler(msg, validado)
+            else:
+                txt=txtprofesores(maestro)
+                bot.send_document(chat_id=chatid,data=txt,caption='.txt con las consultas.')
+        else:
+            msg=bot.send_message(chat_id=chatid,text="Ingresa un NOMBRE y APELLIDO o el nombre completo del profesor:")
+            bot.register_next_step_handler(msg, validado)
+    else:
+         msg=bot.send_message(chat_id=chatid,text="Escribe un nombre de profesor válido (nombre y apellido). Vuelva a escribir el nombre correctamente:")
+         bot.register_next_step_handler(msg, validado)
 
 # ======================================= PRINCIPALES  ======================================= #
+
+
+
 
 # ======================================= SUGERENCIAS ======================================= #
 @bot.message_handler(commands=['sugbot'])
@@ -102,7 +142,6 @@ def sugbot(message):
     chatid=message.chat.id
     msg=bot.send_message(chat_id=chatid,text="Escribe tu sugerencia:")
     bot.register_next_step_handler(msg,mibot) # Da pie a accionar la funcion <mibot> a partir del mensaje "msg"
-
 
 def mibot(message):
     pass
@@ -115,7 +154,29 @@ def sugerencia(message):
     bot.register_next_step_handler(msg,escuela) # Da pie a accionar la funcion <escuela> a partir del mensaje "msg"
 
 def escuela(message):
-    pass
+    try:
+        chatid=message.chat.id
+        texto=message.text
+        if len(texto)<250 and len(texto)>1:
+            if message.chat.last_name==None:
+                username=message.chat.first_name
+            else:
+                username=message.chat.first_name+'_'+message.chat.last_name
+            respuesta=sug(chatid, username,texto)
+            if respuesta==1:
+                msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}.')
+            else:
+                msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido')
+        elif len(texto)<16 and len(texto)>1:
+            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
+            bot.register_next_step_handler(msg, escuela)
+        else:
+            #msg=bot.reply_to(message, 'El texto debe contener menos de 250 caracteres. Prueba otra vez')
+            msg=bot.send_message(chat_id=chatid,text='El texto debe contener más de 16 carácteres y menos de 250. Prueba otra vez.')
+            bot.register_next_step_handler(msg, escuela)
+    except Exception as e:
+        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
+        print(e)
 
 @bot.message_handler(commands=['leersug'])
 def leersug(message):
@@ -263,7 +324,7 @@ def stock(message):
         msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
         bot.register_next_step_handler(msg,stock)
 
-"" BLOQUE PRINCIPAL ""
+""" BLOQUE PRINCIPAL """
 while 1:
     try:
         bot.polling(none_stop = True) # Con esta instruccion garantizamos que el bot siga funcionando a pesar de errores
