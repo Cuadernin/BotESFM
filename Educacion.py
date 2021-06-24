@@ -13,5 +13,13 @@ def numeros(n):
     return respuesta.capitalize()+"."
 
 def rand(n):
-     ">>>>>>>>>>>>>>>>>> INGRESE UNA API COMO LA ANTERIOR <<<<<<<<<<<<<<<<<<<"
-    pass
+    url=f"https://numbersapi.p.rapidapi.com/{n}/trivia"
+    querystring={"fragment":"true","notfound":"floor","json":"true"}
+    headers = {'x-rapidapi-key': "KEY",'x-rapidapi-host': "HOST"}
+
+    response=requests.request("GET", url, headers=headers, params=querystring)
+    respuesta=response.json()
+    respuesta=respuesta['text']
+    respuesta=GoogleTranslator(source='auto',target="es").translate(text=respuesta)
+    return respuesta.capitalize()+"."
+    
