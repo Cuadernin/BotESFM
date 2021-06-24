@@ -1,7 +1,7 @@
 import pandas as pd
 
 def buscador(texto):
-      ">>>>>>>>>>>>>>>>>> BUSCADOR QUE ENCUENTRA EL NOMBRE COMPLETO CON UN NOMBRE Y APELLIDO <<<<<<<<<<<<<<<<<<<"
+      """>>>>>>>>>>>>>>>>>> BUSCADOR QUE ENCUENTRA EL NOMBRE COMPLETO USANDO UN NOMBRE Y APELLIDO <<<<<<<<<<<<<<<<<<<"""
     nombres=texto.split(" ")
     nombre=nombres[0].lower()
     apellido=nombres[1].lower()
@@ -15,8 +15,6 @@ def buscador(texto):
         indexA=pal.find(apellido)
         if indexA>=0 and indexN>=0:
             return pal.upper()
-        else:
-            pass
 
 def cap(row):
     for i,item in enumerate(row):
