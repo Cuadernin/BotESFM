@@ -3,7 +3,7 @@ import firebase_admin
 from firebase_admin import credentials
 
 def sug(chat_id,username,texto):
-    ">>>>>>>>>>>>>>>>>> MANERA SENCILLA DE INGRESAR DATOS A UNA BASE DE DATOS DE FIREBASE <<<<<<<<<<<<<<<<<<<"
+    """>>>>>>>>>>>>>>>>>> Sugerencias Escuela <<<<<<<<<<<<<<<<<<<"""
     if not firebase_admin._apps:
         base=firebase.FirebaseApplication("URL",None)
         datos={"chat_id":chat_id,"Nombre":username,"mensaje":texto}
@@ -15,7 +15,7 @@ def sug(chat_id,username,texto):
         return resultado
 
 def lecturaSug():
-      ">>>>>>>>>>>>>>>>>> MANERA SENCILLA DE OBTENER DATOS DE UNA BASE DE DATOS DE FIREBASE <<<<<<<<<<<<<<<<<<<"
+     """>>>>>>>>>>>>>>>>>> Lectura sugerencias <<<<<<<<<<<<<<<<<<<"""
     if not firebase_admin._apps:
         base=firebase.FirebaseApplication("URL",None)
         leer=base.get('Collection','')
@@ -25,7 +25,7 @@ def lecturaSug():
         return leer
 
 def sugerenciasbot(chat_id,username,texto):
-    ">>>>>>>>>>>>>>>>>> MANERA SENCILLA DE INGRESAR DATOS A UNA BASE DE DATOS DE FIREBASE <<<<<<<<<<<<<<<<<<<"
+    """>>>>>>>>>>>>>>>>>> Ingresa datos sugerencia bot <<<<<<<<<<<<<<<<<<<"""
     if not firebase_admin._apps:
         base=firebase.FirebaseApplication("URL",None)
         datos={"chat_id":chat_id,"Nombre":username,"mensaje":texto}
