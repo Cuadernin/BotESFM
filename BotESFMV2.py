@@ -45,7 +45,6 @@ def help(message): # Como argumento principal de la funcion tomamos la propiedad
     chat_id=message.chat.id  # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
     bot.send_message(chat_id=chat_id,text=messages) # Esta instruccion se repite muchas veces ya que con ella mandas un mensaje al usuario del id
  
-
 # ======================================= PROFESORES  ======================================= # 
 #### ESCRITURA DE RESEÑA ####
 @bot.message_handler(commands=['profesores'])    # Funciones que serán llamadas si el usuario escribe el comando profesores ---> No es necesario que la funcion se llame igual que el comando
@@ -186,13 +185,17 @@ def leersug(message):
         
 @bot.message_handler(commands=['calendario'])
 def calendario(message):
-    ">>>>>>>>>>>>>>>>>> SIMILAR A LA FUNCION ANTERIOR <<<<<<<<<<<<<<<<<<<"
-    pass
+    chatid=message.chat.id
+    url='cal-Escolarizada-20-21.pdf'
+    with open(url,'rb') as file:
+        bot.send_document(chat_id=chatid,data=file,caption='Calendario Oficial del IPN 2020-2021')
 
 @bot.message_handler(commands=['constancias'])
 def constancias(message):
-    ">>>>>>>>>>>>>>>>>> SIMILAR A LA FUNCION <leersug> <<<<<<<<<<<<<<<<<<<"
-    pass
+    chatid=message.chat.id
+    url="PROCED. DE SOLICITUD DE BOLETAS Y CONSTANCIAS año 2021.pdf"
+    with open(url,'rb') as file:
+        bot.send_document(chat_id=chatid,data=file,caption='Proced. de solicitud de boletas y constancias')
 
 @bot.message_handler(commands=['certificado'])
 def certificado(message):
@@ -206,7 +209,29 @@ def datasets(message):
     chatid=message.chat.id
     texto=dataset()
     bot.send_message(chat_id=chatid,text=texto)
+
+@bot.message_handler(commands=["denuncia"])
+def denuncia(message):
+    chatid=message.chat.id
+    texto="Puedes emitir tu denuncia a través del siguiente link: https://www.denunciasegura.ipn.mx/"
+    bot.send_message(chat_id=chatid,text=texto)
+    texto="Además, puedes emitir una queja a través del siguiente link: https://www.ipn.mx/defensoria/orientacion-queja/queja.html"
+    bot.send_message(chat_id=chatid,text=texto)
     
+@bot.message_handler(commands=["reglamento"])
+def reglamento(message):
+    chatid=message.chat.id
+    url="Reg_General_Estudios.pdf"
+    with open(url,'rb') as file:
+        bot.send_document(chat_id=chatid,data=file,caption='Reglamento General de Estudios')
+
+@bot.message_handler(commands=["escudo"])
+def logos(message):
+    chatid=message.chat.id
+    with open("ESCUDO_ESFM.png",'rb') as file:
+        bot.send_photo(chat_id=chatid,photo=file)
+    with open("ipn.png",'rb') as file:
+        bot.send_photo(chat_id=chatid,photo=file)
 # ======================================= PROGRAMACION  ======================================= #  
 @bot.message_handler(commands=['plataformas'])    
 def plataformas(message):
@@ -241,8 +266,20 @@ def numeross(message):
     bot.register_next_step_handler(msg, number) # Da pie a accionar la funcion <number> a partir del mensaje "msg"
 
 def number(message):
-    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA SOLICITAR DATOS DE UN NUMERO O AGRÉGUELOS CON UN YAML <<<<<<<<<<<<<<<<<<<"
-    pass
+    chatid=message.chat.id
+    texto=message.text
+    try:
+        texto=int(texto)
+        if texto>2 and texto<700:
+            dato=numeros(texto)
+            bot.send_message(chat_id=chatid,text=dato)
+        else:
+            msg=bot.send_message(chat_id=chatid, text='ESCRIBE UN NÚMERO ENTERO MAYOR QUE 2:')
+            bot.register_next_step_handler(msg, number)
+    except:
+        #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO:')
+        msg=bot.send_message(chat_id=chatid, text='Debes escribir un número entero. Prueba otra vez:')
+        bot.register_next_step_handler(msg, number)
 
 @bot.message_handler(commands=['random'])
 def random(message):
@@ -251,8 +288,21 @@ def random(message):
     bot.register_next_step_handler(msg, aleatorio) # Da pie a accionar la funcion <aleatorio> a partir del mensaje "msg"
 
 def aleatorio(message):
-    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA SOLICITAR DATOS DE UN NUMERO O AGRÉGUELOS CON UN YAML <<<<<<<<<<<<<<<<<<<"
-    pass
+    chatid=message.chat.id
+    texto=message.text
+    try:
+        texto=int(texto)
+        if texto>2 and texto<3501:
+            dato=rand(texto)
+            bot.send_message(chat_id=chatid,text=dato)
+        else:
+            #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO ENTERO MAYOR QUE 1:')
+            msg=bot.send_message(chat_id=chatid, text='ESCRIBE UN NÚMERO ENTERO MAYOR QUE 2:')
+            bot.register_next_step_handler(msg, aleatorio)
+    except:
+        #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO:')
+        msg=bot.send_message(chat_id=chatid, text='Debes escribir un número entero. Prueba otra vez:')
+        bot.register_next_step_handler(msg, aleatorio)
 
 @bot.message_handler(commands=['nuvo'])
 def nuvo(message):
