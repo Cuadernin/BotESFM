@@ -21,3 +21,4 @@ denuncia - Procedimiento para emitir una denuncia o queja.
 escudo - Imagen del escudo del IPN y ESFM.
 reglamento - Reglamento general de estudios.
 acciones - Datos históricos de una acción usando Yahoo finances.
+distr - Distribución que mejor se adapta a los datos.
