@@ -29,7 +29,7 @@ def distribucion(data):
     "gumbel_r","gumbel_l","halfnorm","invgauss","invgamma","kappa3","maxwell","ncf","nct","nakagami","levy","rice","truncnorm","wrapcauchy",
     "lognorm","beta","cauchy","f","chi2","laplace","gamma","chi","genpareto","genexpon","invgamma","johnsonsb",
     "genextreme","gausshyper","gilbrat","gompertz","wald","rdist","rayleigh","vonmises","pearson3","ncx2","lomax","moyal","mielke","logistic",
-    "loggamma","johnsonsu","dweibull","fatiguelife","frechet_l"]
+    "loggamma","johnsonsu","dweibull","fatiguelife","frechet_l"]  # distribuciones disponibles en scipy
     parametros={};resultados=[]
     for dist_name in distr:
         dist=getattr(st, dist_name) #extraemos los atributos de cada distribucion almacenados en la libreria scipy
