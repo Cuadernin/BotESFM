@@ -1,6 +1,8 @@
 import time
 import requests
 import telebot
+import pandas as pd
+import os
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
@@ -14,6 +16,7 @@ from ConexionFirebase import conexion
 from SugeridosFirebase import sug,sugerenciasbot
 from MaestrosESFM import buscador,consulta
 from acciones import historial
+from Distribucion import distribucion,fd,grafico
 
 
 TOKEN=TOKEN
@@ -87,8 +90,7 @@ def escritura(message):
             msg=bot.send_message(chat_id=chatid,text='El texto debe contener más de 16 y menos de 250 carácteres. Prueba otra vez:')
             bot.register_next_step_handler(msg,escritura)
     except Exception as e:
-        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
-        
+        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")      
         
 #### LECTURA DE RESEÑA #### 
 @bot.message_handler(commands=['listas'])
@@ -131,8 +133,6 @@ def validado(message):
          bot.register_next_step_handler(msg, validado)
 
 # ======================================= PRINCIPALES  ======================================= #
-
-
 
 
 # ======================================= SUGERENCIAS ======================================= #
@@ -248,7 +248,7 @@ def cursos(message):
 # ======================================= OTROS  ======================================= #
 @bot.message_handler(commands=['covid']) 
 def covid(message):
-    ">>>>>>>>>>>>>>>>>> INSERTE UNA API PARA MANDAR LA INFORMACION DE COVID <<<<<<<<<<<<<<<<<<<"
+    """>>>>>>>>>>>>>>>>>> INSERTE UNA API PARA MANDAR LA INFORMACION DE COVID <<<<<<<<<<<<<<<<<<<"""
     pass
         
 @bot.message_handler(commands=['contacto']) 
@@ -277,7 +277,6 @@ def number(message):
             msg=bot.send_message(chat_id=chatid, text='ESCRIBE UN NÚMERO ENTERO MAYOR QUE 2:')
             bot.register_next_step_handler(msg, number)
     except:
-        #msg=bot.reply_to(message, 'ESCRIBE UN NÚMERO:')
         msg=bot.send_message(chat_id=chatid, text='Debes escribir un número entero. Prueba otra vez:')
         bot.register_next_step_handler(msg, number)
 
@@ -308,7 +307,7 @@ def aleatorio(message):
 def nuvo(message):
     chatbott=ChatBot('Nuvo')  # Nombre del bot
     
-     ">>>>>>>>>>>>>>>>>> ENTRENAMOS EL BOT <<<<<<<<<<<<<<<<<<<"
+     """>>>>>>>>>>>>>>>>>> ENTRENAMOS EL BOT <<<<<<<<<<<<<<<<<<<"""
         
     texto=message.text
     chatid=message.chat.id
@@ -318,7 +317,7 @@ def nuvo(message):
     return chatbott
 
 def charla(message):
-    ">>>>>>>>>>>>>>>>>> CREAMOS UN CICLO DONDE EL BOT SIGUE LA CHARLA <<<<<<<<<<<<<<<<<<<"
+    """>>>>>>>>>>>>>>>>>> CREAMOS UN CICLO DONDE EL BOT SIGUE LA CHARLA <<<<<<<<<<<<<<<<<<<"""
     pass  
 
 lista2=[]
@@ -373,6 +372,53 @@ def stock(message):
     else:
         msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
         bot.register_next_step_handler(msg,stock)
+
+@bot.message_handler(commands=["distr"])
+def distr(message):
+    mensaje="""CARGA el csv (menos de 20 MB)"""
+    chatid=message.chat.id
+    msg=bot.send_message(chat_id=chatid,text=mensaje)
+    bot.register_next_step_handler(msg,carga)
+
+nombres=[]
+def carga(message):
+    try:
+        dir=os.getcwd()
+        fileid=message.document.file_id
+        nombre=message.document.file_name
+        nombres.append(nombre)
+        chatid=message.chat.id
+        file=bot.get_file(fileid)
+        downf=bot.download_file(file.file_path)
+        with open(dir + "/" + nombre,'wb') as f:
+            f.write(downf)
+        msg=bot.send_message(chat_id=chatid,text="Escribe el nombre de la columna:")
+        bot.register_next_step_handler(msg,doc)
+    except Exception as e:
+        bot.send_message(chat_id=chatid,text=str(e))
+        print(e)
+
+def doc(message):
+    texto=message.text
+    chatid=message.chat.id
+    if len(texto)>1:
+        try:
+            data=pd.read_csv(nombres[0],encoding="latin1")
+            result=distribucion(data[texto])
+            mensaje="""
+        Distribución escogida: %s
+
+        Valor p: %s
+
+        Parametros: %s
+            """%(result[0],result[1],result[2])
+            bot.send_message(chat_id=chatid,text=mensaje)
+            pdf=fd(result[3],result[2])
+            grafico(data,texto,pdf,result)
+            with open("distribucion.png",'rb') as file:
+                bot.send_photo(chat_id=chatid,photo=file)
+        except Exception as e:
+            print(e)
 
 """ BLOQUE PRINCIPAL """
 while 1:
