@@ -9,7 +9,7 @@ Escribe @ESFMBot en el buscador de telegram y da click en él. Cuando salgas de 
 Para comenzar a usarlo da click en el botón start y después escribe /help. 
 
 ### Notas 📖
-En este repertorio se encuentra el código base del bot de la versión 1.4 con la finalidad de que cualquiera que quiera crear el suyo pueda usarlo. No obstante, se debe tener conocimiento previo de Python y debe disponerse de una maquina virtual para alojar y mantener la instancia corriendo. \
+En este repertorio se encuentra el código base de la versión 1.4, con la finalidad de que cualquiera pueda usarlo para crear el suyo. No obstante, se debe tener conocimiento previo de Python y debe disponerse de una maquina virtual para alojar y mantener la instancia corriendo. \
 En mi caso hago uso de [PythonAnywhere](https://www.pythonanywhere.com/), que básicamente es una plataforma que te permite alojar código Python en la nube así como base de datos MySQL.
 
 El directorio donde se encuentra corriendo la instancia se ve así:
