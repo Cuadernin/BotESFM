@@ -42,7 +42,7 @@ def distribucion(data):
     return dist_escogida,p_value,parametros[dist_escogida],dist
 
 def fd(distr,params,n=9800):
-    """ Funcion de densidad de la distribucion"""
+    """ Funcion de densidad de la distribucion """
     args=params[:-2];loc=params[-2];scale=params[-1]
 
     liz=distr.ppf(0.01,*args,loc=loc,scale=scale) if args else distr.ppf(0.01,loc=loc,scale=scale)
@@ -53,9 +53,9 @@ def fd(distr,params,n=9800):
     return pd.Series(data,x)
 
 def grafico(data,columna,pdf,result):
-    """ Generación del histograma con la función escogida como la mejor"""
+    """ Generación del histograma con la función escogida como la mejor """
     plt.figure(figsize=(12,8))
     xmin,xmax=plt.xlim()
     plt.hist(data[columna],bins=25,density=1,alpha=0.6,color='g',label='Histograma con distribución')
     ax=pdf.plot(lw=2, label=result[0],legend=True)
-    plt.savefig('distribucion.png')
+    plt.savefig('distribucion.png') # plt.show() si desea verla
