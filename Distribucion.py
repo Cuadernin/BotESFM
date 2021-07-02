@@ -53,6 +53,7 @@ def fd(distr,params,n=9800):
     return pd.Series(data,x)
 
 def grafico(data,columna,pdf,result):
+    """ Generación del histograma con la función escogida como la mejor"""
     plt.figure(figsize=(12,8))
     xmin,xmax=plt.xlim()
     plt.hist(data[columna],bins=25,density=1,alpha=0.6,color='g',label='Histograma con distribución')
