@@ -560,6 +560,7 @@ def stock(message):
                 lista2.clear()
         else:
             bot.send_message(chat_id=chatid,text='Algo falla, intenta con otra abreviatura o cambia la fecha.')
+            lista2.clear()
     else:
         msg=bot.send_message(chat_id=chatid,text='Escribe una fecha válida. Prueba otra vez.')
         bot.register_next_step_handler(msg,stock)
