@@ -28,8 +28,6 @@ from Distribucion import distribucion,fd,grafico
 TOKEN=TOKEN # Este token se genera automaticamente cuando crean un bot con BotFather
 bot=telebot.TeleBot(TOKEN)
 
-firebase=firebase.FirebaseApplication("link",None)
-
 @bot.message_handler(commands=['start'])    # Funciones que serán llamadas si el usuario escribe el comando start ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start  <<<<<<<<<<<<<<<<<<<"
 def start(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
