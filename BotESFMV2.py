@@ -25,7 +25,7 @@ from acciones import historial
 from Distribucion import distribucion,fd,grafico
 
 
-TOKEN=TOKEN
+TOKEN=TOKEN # Este token se genera automaticamente cuando crean un bot con BotFather
 bot=telebot.TeleBot(TOKEN)
 
 firebase=firebase.FirebaseApplication("link",None)
