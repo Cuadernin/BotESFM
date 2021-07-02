@@ -29,7 +29,7 @@ TOKEN=TOKEN # Este token se genera automaticamente cuando crean un bot con BotFa
 bot=telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])    # Funciones que serán llamadas si el usuario escribe el comando start ---> No es necesario que la funcion se llame igual que el comando
-">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start  <<<<<<<<<<<<<<<<<<<"
+""" >>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start (PROPIEDADES DE UNA CLASE)  <<<<<<<<<<<<<<<<<<<"""
 def start(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
     messages="""Esta es la versión 1.4. Se ha agregado un nuevo comando y reconfigurado el chatbot.
     1. Distribución de un conjunto de datos adjuntando un archivo CSV.
