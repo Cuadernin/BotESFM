@@ -1,3 +1,7 @@
+
+
+
+
 import time
 import requests
 import telebot
@@ -41,10 +45,125 @@ def start(message): # Como argumento principal de la funcion tomamos la propieda
     
 # ======================================= AYUDA ======================================= #
 @bot.message_handler(commands=['help'])  # Funciones que serán llamadas si el usuario escribe el comando help ---> No es necesario que la funcion se llame igual que el comando
-">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /help  <<<<<<<<<<<<<<<<<<<"
-def help(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
-    """Crea una funcion cuando escribe HELP"""                      
-    messages="Mensaje por mostrar cuando se escribe el comando /help"
+""">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /help (PROPIEDADES DE UNA CLASE) <<<<<<<<<<<<<<<<<<<"""
+
+def help(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje   
+    
+    messages="""A continuacion, la lista de funciones divididas por categorias:
+
+===============================
+========= PROFESORES ==========
+===============================
+    -- Escribe una reseña de un profesor:
+        💬Descripción: Escribe una breve reseña de un profesor (menos de 250 carácteres).
+        🔑Comando: /profesores
+
+    -- Lee las reseñas que han escrito otros compañeros:
+        💬Descripción: Lee las reseñas que han escrito otros alumnos.
+        🔑Comando: /lectura
+
+    -- Enlista los profesores disponibles en la base de datos:
+        💬Descripción: Lista de profesores.
+        🔑Comando: /listas
+
+    -- Correos de los profesores:
+        💬Descripción: .txt con los correos de los profesores.
+        🔑Comando: /correos
+
+================================
+========= PROGRAMACIÓN ========
+================================
+    -- Plataformas para aprender programación:
+        💬Descripción: Lista de plataformas donde se puede aprender a programar.
+        🔑Comando: /plataformas
+    -- Base de datos:
+        💬Descripción: Cursos gratuitos de base de datos relacionales.
+        🔑Comando: /cursos
+
+===============================
+========= SUGERENCIAS =========
+===============================
+    -- Sugerencia para mejorar el bot
+        💬Descripción: Escribe una sugerencia para el autor de este bot y así seguir mejorándolo.
+        🔑Comando: /sugbot
+
+===============================
+========== ESCUELA ============
+===============================
+    -- Escribir una sugerencia para mejorar la escuela:
+        💬Descripción: Escribe una sugerencia o consejo para mejorar algún aspecto de la escuela.
+        🔑Comando: /sugerencia
+
+    -- Leer las sugerencias escritas por otros alumnos:
+        💬Descripción: Puedes ver las sugerencias escritas por otros alumnos.
+        🔑Comando: /leersug
+
+    -- Plataforma para crear portadas formales (tesis, ensayos, etc):
+        💬Descripción: Crea portadas formales en Latex básandote en plantillas.
+        🔑Comando: /plantilla
+
+    -- Datasets:
+        💬Descripción: Sitios web donde puedes extraer datasets para usarlos en cualquier proyecto.
+        🔑Comando: /datasets
+
+    -- Solicitar constancias oficiales:
+        💬Descripción: PowerPoint con las instrucciones oficiales para solicitar una constancia.
+        🔑Comando: /constancias
+
+    -- Escudos del IPN y ESFM:
+        💬Descripción: Escudos del IPN y ESFM en formato png.
+        🔑Comando: /escudo
+
+    -- Calendario del IPN:
+        💬Descripción: Calendario oficial del IPN.
+        🔑Comando: /calendario
+
+    -- Reglamento del IPN:
+        💬Descripción: Reglamento general de estudios.
+        🔑Comando: /reglamento
+
+    -- Certificados y carta de pasante:
+        💬Descripción: Procedimiento para obtener el certificado de estudios y la carta de pasante.
+        🔑Comando: /certificado
+
+    -- Denuncias:
+        💬Descripción: Procedimiento para realizar una denuncia
+        🔑Comando: /denuncia
+
+
+===============================
+=========== OTROS =============
+===============================
+    -- Covid:
+        💬Descripción: Confirmados y muertes por estado en México.
+        🔑Comando: /covid
+
+    -- Datos históricos de una acción:
+        💬Descripción: Solicita los datos históricos de una acción que cotice en USA (yahoo financie).
+        🔑Comando: /acciones
+
+    -- Datos matemáticos acerca de un número:
+        💬Descripción: Datos matemáticos acerca de un número ENTERO que escribas (válido desde el 3 al 700).
+        🔑Comando: /numero
+
+    -- Datos interesantes acerca de un número:
+        💬Descripción: Datos interesantes sobre un número ENTERO que escribas(válido del 1 al 3500).
+        🔑Comando: /random
+
+    -- Contacto:
+        💬Descripción: Repertorio del proyecto.
+        🔑Comando: /contacto
+
+    -- Distribución de datos:
+        💬Descripción: Encuentra la mejor distribución que se adapte a los datos.
+        🔑Comando: /distr
+
+    -- ChatBot:
+        💬Descripción: Chatea con un chatbot llamado Nuvo.
+        🔑Comando: /nuvo
+        📑Nota: Este es el primer chatbot que diseño llamado Nuvo👷. Para dejar de hablar con él escribe: salir.
+    """  # Mensaje por mostrar cuando se escribe el comando /help
+    
     chat_id=message.chat.id  # Esta instruccion  se repite muchas veces ya que con ella obtienes el id del usuario
     bot.send_message(chat_id=chat_id,text=messages) # Esta instruccion se repite muchas veces ya que con ella mandas un mensaje al usuario del id
  
@@ -132,8 +251,6 @@ def validado(message):
          msg=bot.send_message(chat_id=chatid,text="Escribe un nombre de profesor válido (nombre y apellido). Vuelva a escribir el nombre correctamente:")
          bot.register_next_step_handler(msg, validado)
 
-# ======================================= PRINCIPALES  ======================================= #
-
 
 # ======================================= SUGERENCIAS ======================================= #
 @bot.message_handler(commands=['sugbot'])
@@ -143,7 +260,28 @@ def sugbot(message):
     bot.register_next_step_handler(msg,mibot) # Da pie a accionar la funcion <mibot> a partir del mensaje "msg"
 
 def mibot(message):
-    pass
+    try:
+        chatid=message.chat.id
+        texto=message.text
+        if len(texto)<250 and len(texto)>1:
+            if message.chat.last_name==None:
+               username=message.chat.first_name
+            else:
+                username=message.chat.first_name+'_'+message.chat.last_name
+            respuesta=sugerenciasbot(chatid,username,texto)
+            if respuesta==1:
+                msg=bot.send_message(chat_id=chatid,text=f'Muchas gracias, {username}, por tu sugerencia. Esto me ayuda a mejorar el bot.')
+            else:
+                msg=bot.send_message(chat_id=chatid,text=f'Tal vez el servidor esta dormido.')
+        elif len(texto)<16 and len(texto)>1:
+            msg=bot.send_message(chat_id=chatid,text='Trata de escribir algo serio. Prueba otra vez.')
+            bot.register_next_step_handler(msg,mibot)
+        else:
+            msg=bot.send_message(chat_id=chatid,text='El texto debe contener más de 16 carácteres y menos de 250. Prueba otra vez.')
+            bot.register_next_step_handler(msg,mibot)
+    except Exception as e:
+        bot.send_message(chat_id=message.chat.id,text="Algo raro paso. Lo siento.")
+        print(e)
         
 # ======================================= ESCUELA  ======================================= #  
 @bot.message_handler(commands=['sugerencia'])   
@@ -248,8 +386,26 @@ def cursos(message):
 # ======================================= OTROS  ======================================= #
 @bot.message_handler(commands=['covid']) 
 def covid(message):
-    """>>>>>>>>>>>>>>>>>> INSERTE UNA API PARA MANDAR LA INFORMACION DE COVID <<<<<<<<<<<<<<<<<<<"""
-    pass
+    link="https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats"
+    querystring={"country":"Mexico"}
+    headers={
+        'x-rapidapi-key':"key",
+        'x-rapidapi-host':"host"
+        }
+    response=requests.request("GET",link,headers=headers, params=querystring)
+    data=response.json()
+    my_message="""Hola, espero se encuentre bien. A continuación, la información acumulada de COVID-19 en el pais."""
+    chat_id=message.chat.id
+    bot.send_message(chat_id=chat_id,text=my_message)
+    for user in data['data']['covid19Stats']:
+        lista.append([user['province'],user['confirmed'],user['deaths']])
+        if user['province']!="Unknown":
+            mensaje="""
+            **** %s ****
+            Confirmados: %s
+            Muertes: %s
+            \r"""%(user["province"],user["confirmed"],user["deaths"])
+            bot.send_message(chat_id=chat_id,text=mensaje)
         
 @bot.message_handler(commands=['contacto']) 
 def contactos(message):
