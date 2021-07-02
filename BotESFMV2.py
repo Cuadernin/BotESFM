@@ -1,7 +1,7 @@
 """ 
 CÓDIGO COMPLETO del bot 
 
-NOTA: Si deseas obtener los demás archivos que se usan en los diferentes comandos, contáctame al correo escrito en mi README. 
+NOTA: Si deseas obtener los demás archivos que se usan en los diferentes comandos contáctame al correo escrito en mi README. 
 """
 
 import time
