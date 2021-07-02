@@ -33,10 +33,9 @@ firebase=firebase.FirebaseApplication("link",None)
 @bot.message_handler(commands=['start'])    # Funciones que serán llamadas si el usuario escribe el comando start ---> No es necesario que la funcion se llame igual que el comando
 ">>>>>>>>>>>>>>>>>> A partir de aquí todo lo declarado surtirá efecto cuando se inicie el comando /start  <<<<<<<<<<<<<<<<<<<"
 def start(message): # Como argumento principal de la funcion tomamos la propiedad message que tendrá en ella toda la información acerca del mensaje
-    messages="""Esta es la versión 1.3 . Se han agregado tres nuevas funciones.
-    1. Escudos de la escuela en formato png.
-    2. Reglamento general de estudios.
-    3. Solicitud de datos históricos de una acción (yahoo finance).
+    messages="""Esta es la versión 1.4. Se ha agregado un nuevo comando y reconfigurado el chatbot.
+    1. Distribución de un conjunto de datos adjuntando un archivo CSV.
+    2. Chatbot (Nuvo) habilitado.
 
     Cualquier fallo que encuentres te agradecería muchísimo que me contactaras.
 
