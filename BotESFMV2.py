@@ -305,9 +305,31 @@ def aleatorio(message):
 
 @bot.message_handler(commands=['nuvo'])
 def nuvo(message):
-    chatbott=ChatBot('Nuvo')  # Nombre del bot
-    
-     """>>>>>>>>>>>>>>>>>> ENTRENAMOS EL BOT <<<<<<<<<<<<<<<<<<<"""
+    try:
+        chatid=message.chat.id
+        chatbott=ChatBot('Nuvo',storage_adapter='chatterbot.storage.SQLStorageAdapter',
+        preprocessors=['chatterbot.preprocessors.clean_whitespace',],
+        logic_adapters=[{
+            'import_path':'chatterbot.logic.BestMatch',
+            'default_response':'Lo siento, no puedo entender lo que dices :c.',
+            'maximum_similarity_threshold':0.90,},'chatterbot.logic.MathematicalEvaluation'],
+        database_uri='sqlite:///database.db',read_only=True)
+        trainer=ChatterBotCorpusTrainer(chatbott)
+        trainer.train("chatterbot.corpus.spanish.greetings",
+        "chatterbot.corpus.spanish.conversations",
+        "chatterbot.corpus.spanish.IA",
+        "chatterbot.corpus.spanish.dinero",
+        "chatterbot.corpus.spanish.emociones",
+        "chatterbot.corpus.spanish.perfilbot",
+        "chatterbot.corpus.spanish.greetings",
+        "chatterbot.corpus.spanish.psicologia") # Entrenamiento
+        texto=message.text
+        chatid=message.chat.id
+        bot_input=chatbott.get_response(texto)
+        msg=bot.send_message(chat_id=chatid,text=str(bot_input))
+        bot.register_next_step_handler(msg,charla)
+    except Exception as e:
+        print(e)
         
     texto=message.text
     chatid=message.chat.id
