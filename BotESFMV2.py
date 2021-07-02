@@ -305,6 +305,12 @@ def aleatorio(message):
 
 @bot.message_handler(commands=['nuvo'])
 def nuvo(message):
+    chatid=message.chat.id
+    mensaje='Para empezar a usarlo escribe Hola. Escribe Salir cuando desees dejar de hablar con él.'
+    msg=bot.send_message(chat_id=chatid,text=mensaje)
+    bot.register_next_step_handler(msg,inicio)
+
+def inicio(message):
     try:
         chatid=message.chat.id
         chatbott=ChatBot('Nuvo',storage_adapter='chatterbot.storage.SQLStorageAdapter',
@@ -314,15 +320,17 @@ def nuvo(message):
             'default_response':'Lo siento, no puedo entender lo que dices :c.',
             'maximum_similarity_threshold':0.90,},'chatterbot.logic.MathematicalEvaluation'],
         database_uri='sqlite:///database.db',read_only=True)
+        """
         trainer=ChatterBotCorpusTrainer(chatbott)
         trainer.train("chatterbot.corpus.spanish.greetings",
         "chatterbot.corpus.spanish.conversations",
         "chatterbot.corpus.spanish.IA",
         "chatterbot.corpus.spanish.dinero",
-        "chatterbot.corpus.spanish.emociones",
-        "chatterbot.corpus.spanish.perfilbot",
-        "chatterbot.corpus.spanish.greetings",
-        "chatterbot.corpus.spanish.psicologia") # Entrenamiento
+        "chatterbot.corpus.spanish.emociones",    Se anula esta parte porque ya lo entrene una vez y dicho entrenamiento se guarda
+        "chatterbot.corpus.spanish.perfilbot",      en database.db.
+        "chatterbot.corpus.spanish.greetings",    Si deseo entrenarlo con nueva información debo volver a colocar esta parte comentada
+        "chatterbot.corpus.spanish.psicologia")
+        """
         texto=message.text
         chatid=message.chat.id
         bot_input=chatbott.get_response(texto)
@@ -330,18 +338,24 @@ def nuvo(message):
         bot.register_next_step_handler(msg,charla)
     except Exception as e:
         print(e)
-        
-    texto=message.text
-    chatid=message.chat.id
-    bot_input=chatbott.get_response(texto) # Respuesta del bot
-    msg=bot.send_message(chat_id=chatid,text=str(bot_input)) 
-    bot.register_next_step_handler(msg,charla) # Da pie a accionar la funcion <charla> a partir del mensaje "msg"
-    return chatbott
 
 def charla(message):
-    """>>>>>>>>>>>>>>>>>> CREAMOS UN CICLO DONDE EL BOT SIGUE LA CHARLA <<<<<<<<<<<<<<<<<<<"""
-    pass  
-
+    chatbott=ChatBot('Nuvo',storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    preprocessors=['chatterbot.preprocessors.clean_whitespace',],
+    logic_adapters=[{
+        'import_path':'chatterbot.logic.BestMatch',
+        'default_response':'Lo siento, no puedo entender lo que dices :c.',
+        'maximum_similarity_threshold':0.90,},'chatterbot.logic.MathematicalEvaluation'],
+    database_uri='sqlite:///database.db',read_only=True)
+    chatid=message.chat.id
+    texto=message.text
+    if texto.lower()=="salir":
+        bot.send_message(chat_id=chatid,text="Hasta luego. Fue un gusto hablar contigo.")
+    else:
+        bot_input=chatbott.get_response(texto)
+        msg=bot.send_message(chat_id=chatid,text=str(bot_input))
+        bot.register_next_step_handler(msg,charla)
+        
 lista2=[]
 @bot.message_handler(commands=["acciones"])
 def stocks(message):
