@@ -3,7 +3,7 @@ La creación del bot surge como proyecto propio sin fines de lucro. Fue una idea
 de [ESFM](https://www.esfm.ipn.mx/) en distintas tareas.
  
 ## Instalación 🔧
-Escribe @ESFMBot en el buscador de telegram y da click en él. Cuando salgas de la conversación aparecerá en tu feed. 
+El bot ya NO se encuentra disponible, sin embargo, puedes usar el presente código y correrlo para crear tu propio bot con las funciones de ESFMBot.
 
 ## Uso 🎮
 Para comenzar a usarlo da click en el botón start y después escribe /help. 
